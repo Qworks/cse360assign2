@@ -3,7 +3,10 @@
  * Class ID: 321
  * Assignment Number:1
  * Description: This Class makes a simple list in an array
- * where integers can be added and removed.
+ * where integers can be added and removed. This version 
+ * increases the size of the array by 50% when adding if it
+ * is full and decreases the size by 25% when removing if at least 25% of
+ * the array is empty.
  */
 package cse360assign2;
 
@@ -28,17 +31,21 @@ public class SimpleList
 	{
 		for(int index = count; index > 0; index--)
 		{
-			if(index==10)//cuts off the number at the end of the list
+			if(index == list.length)//increases the size if the list is full
 			{
-				index--;
+				int[] temp = new int[(int) (list.length * 1.5)]; 
+				//increases the size by 50% rounded down
+				for(int index2 = 0; index2 < count; index2++) 
+				//copies list into a temp array
+				{
+					temp[index2] = list[index2]; 
+				}
+				list = temp; //list becomes temp
 			}
 			list[index] = list[index-1];
 		}
 		list[0] = num;
-		if(count != 10)
-		{
-			count++;
-		}
+		count++;
 	}
 	public void remove(int num)
 	/**
@@ -56,6 +63,18 @@ public class SimpleList
 			}
 			list[count-1]=0;
 			count--;
+			if(count/list.length < 0.75 && list.length > 1) 
+			//if the list has more than 25% empty spaces
+			{
+				int[] temp = new int[(int) (list.length*.75)]; 
+				//decreases the size by 25% rounded down
+				for(int index2 = 0; index2 < count; index2++) 
+				//copies list into a temp array
+				{
+					temp[index2] = list[index2]; 
+				}
+				list = temp; //list becomes temp
+			}
 		}
 	}
 	public int count()
